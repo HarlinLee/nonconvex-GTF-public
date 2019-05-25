@@ -128,8 +128,9 @@ def runDenoisingSimulation(name, INPUT_SNR, PENALTIES, k, Gnx, y_true, max_evals
     print 'SIGMA_SQ:', SIGMA_SQ
     print SNAPSHOTS
 
-    #SCALES = np.sqrt(10**np.random.uniform(-1, 3, max(SNAPSHOTS)-1))
-    SCALES = np.array([1,1.480768008,1.94284566,3.868883974,27.15872209,48.86767295,0.993093933,0.199217915])
+    SCALES = np.sqrt(10**np.random.uniform(-1, 3, max(SNAPSHOTS)-1))
+    SCALES = np.array([1] +list(SCALES))
+    #SCALES = np.array([1,1.480768008,1.94284566,3.868883974,27.15872209,48.86767295,0.993093933,0.199217915])
     print SCALES
     scales = np.tile(SCALES.reshape(1, -1), (num_nodes, 1))
     Y_true = np.multiply(np.tile(y_true.reshape(-1, 1), (1, max(SNAPSHOTS))), scales)
