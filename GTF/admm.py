@@ -6,7 +6,7 @@ from Penalty import L1Penalty, SCADPenalty, MCPPenalty
 from scipy import sparse
 from scipy.linalg import inv
 
-def admm(Y, gamma, rho, Dk,  penalty_f, penalty_param, tol_abs=10**(-5), tol_rel=10**(-4), max_iter=1000, B_init = None):
+def admm(Y, gamma, rho, Dk,  penalty_f, penalty_param, tol_abs=10**(-5), tol_rel=10**(-4), max_iter=1000, B_init = None, invX=None):
     """
     solves min_{beta} 1/2||Y-B||_F^2 + h(D^(k+1)*B; gamma, penalty_param)
     augmented Lagrangian problem:
@@ -66,8 +66,9 @@ def admm(Y, gamma, rho, Dk,  penalty_f, penalty_param, tol_abs=10**(-5), tol_rel
 
 
     # Calculate this out of the loop for speed up
-    DTD = Dk.T.dot(Dk)
-    I_DTD_inv = inv(np.eye(n) + rho * DTD.toarray())
+    if invX is None:
+        DTD = Dk.T.dot(Dk)
+        I_DTD_inv = inv(np.eye(n) + rho * DTD.toarray())
 
     while not conv:
         ########################################
@@ -75,7 +76,7 @@ def admm(Y, gamma, rho, Dk,  penalty_f, penalty_param, tol_abs=10**(-5), tol_rel
         ## beta = (I+ rho*Dk'Dk)^(-1)* (rho*Dk'*(z - u) + y)
         ########################################
         for j in range(d):
-            B[:, j] = np.matmul(I_DTD_inv, rho*Dk.T.dot(Z[:, j] - U[:, j]) + Y[:, j])
+            B[:, j] = np.matmul(invX, rho*Dk.T.dot(Z[:, j] - U[:, j]) + Y[:, j])
 
         DB = Dk.dot(B)
 

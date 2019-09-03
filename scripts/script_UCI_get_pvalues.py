@@ -9,7 +9,7 @@ from scipy.stats import ttest_rel
 prefix = ''
 suffix = '.csv'
 delim = '-'
-datadir = 'datasets/UCI_data/results/'
+datadir = '../datasets/UCI_data/results/'
 #datasets = ['iris', 'heart-disease', 'yeast', 'wine', 'winequality','breast-cancer','internet-ads', 'car']
 penalties = ['SCAD-L1', 'MCP-L1']
 ks = np.arange(2)

@@ -177,7 +177,7 @@ def admm_denoising_snr(args,  Y, sigma_sq, y_true, Dk, penalty_f, eig, B_init, v
 def autotune_denoising(Y, y_true, Dk, penalty_f, sigma_sq, max_evals, pspace, eig=None, B_init=None, vec=False):
     _, num_trial = Y.shape
     if eig is None:
-        [S, V] = np.linalg.eig(Dk.T.dot(Dk))
+        [S, V] = np.linalg.eigh(Dk.T.dot(Dk))
         eig = (S, V)
 
     admm_proxy = partial(admm_denoising_snr, Y=Y, sigma_sq=sigma_sq, eig=eig, y_true=y_true, Dk=Dk, penalty_f=penalty_f, B_init=B_init, vec=vec)

@@ -9,7 +9,7 @@ from scipy.stats import ttest_rel
 prefix = ''
 suffix = '.csv'
 delim = '-'
-datadir = 'datasets/UCI_data/results/'
+datadir = '../datasets/UCI_data/results/'
 #datasets = ['iris', 'heart-disease', 'yeast', 'wine', 'winequality','breast-cancer','internet-ads', 'car']
 penalties = ['SCAD-L1', 'MCP-L1']
 ks = np.arange(2)
@@ -26,7 +26,7 @@ with open(outfn, 'w') as csvfile:
             print (f)
             results = pd.read_csv(datadir + f, skiprows=1, dtype={'penalty_f': str, 'avg miscls rate': np.float64},
                                   names=['k', 'penalty_f', 'gamma', 'rho', 'penalty_param', 'avg miscls rate',
-                                         'num_trial']+range(num_trials))
+                                         'num_trial']+list(range(num_trials)))
             print (results.shape)
             for k in ks:
                 l1_results = results.loc[(results['k'] == k) & (results['penalty_f'] == 'L1'), range(num_trials)]

@@ -9,7 +9,7 @@ processed_data_dir = '../datasets/UCI_data/preprocessed/'
 data_fn = 'iris.data'
 print (data_fn)
 
-data = np.loadtxt(data_dir+data_fn, dtype='string', delimiter=',')
+data = np.loadtxt(data_dir+data_fn, dtype='str', delimiter=',')
 features = data[:,:-1].astype(np.float)
 print (features.shape)
 n = features.shape[0]
@@ -28,7 +28,7 @@ np.savetxt(processed_data_dir+'iris.classes', classes, fmt='%d')
 data_fn = 'adult.data'
 print (data_fn)
 
-data = np.loadtxt(data_dir+data_fn, dtype='string', delimiter=',')
+data = np.loadtxt(data_dir+data_fn, dtype='str', delimiter=',')
 features = data[:,:-1]
 print (features.shape)
 n = features.shape[0]
@@ -53,7 +53,7 @@ print (data_fn)
 
 delim = ','
 
-data = np.loadtxt(data_dir+data_fn, dtype='string', delimiter=delim)
+data = np.loadtxt(data_dir+data_fn, dtype='str', delimiter=delim)
 features = data[:,1:]
 print (features.shape)
 n = features.shape[0]
@@ -72,7 +72,7 @@ np.savetxt(processed_data_dir+'wine.classes', classes, fmt='%d')
 data_fn = 'car.data'
 print (data_fn)
 
-data = np.loadtxt(data_dir+data_fn, dtype='string', delimiter=',')
+data = np.loadtxt(data_dir+data_fn, dtype='str', delimiter=',')
 features = data[:,:-1]
 print (features.shape)
 n = features.shape[0]
@@ -97,7 +97,7 @@ print (data_fn)
 
 delim = ','
 
-data = np.loadtxt(data_dir+data_fn, dtype='string', delimiter=delim)
+data = np.loadtxt(data_dir+data_fn, dtype='str', delimiter=delim)
 features = data[:,2:]
 print (features.shape)
 n = features.shape[0]
@@ -116,7 +116,7 @@ np.savetxt(processed_data_dir+'breast-cancer.classes', classes, fmt='%d')
 data_fn = 'abalone.data'
 print (data_fn)
 
-data = np.loadtxt(data_dir+data_fn, dtype='string', delimiter=',')
+data = np.loadtxt(data_dir+data_fn, dtype='str', delimiter=',')
 features = data[:,:-1]
 print (features.shape)
 n = features.shape[0]
@@ -138,7 +138,7 @@ np.savetxt(processed_data_dir+'abalone.classes', classes, fmt='%d')
 data_fn = 'winequality.data'
 print (data_fn)
 
-data = np.loadtxt(data_dir+data_fn, dtype='string', delimiter=';', skiprows=1)
+data = np.loadtxt(data_dir+data_fn, dtype='str', delimiter=';', skiprows=1)
 features = data[:,:-1]
 print (features.shape)
 n = features.shape[0]
@@ -157,7 +157,7 @@ np.savetxt(processed_data_dir+'winequality.classes', classes, fmt='%d')
 data_fn = 'heart-disease.data'
 print (data_fn)
 
-data = np.loadtxt(data_dir+data_fn, delimiter=',', dtype='string')
+data = np.loadtxt(data_dir+data_fn, delimiter=',', dtype='str')
 data[data == "?"] = "0"
 features = data[:,:-1]
 print (features.shape)
@@ -176,7 +176,7 @@ np.savetxt(processed_data_dir+'heart-disease.classes', classes, fmt='%d')
 data_fn = 'yeast.data'
 print (data_fn)
 
-data = np.loadtxt(data_dir+data_fn, dtype='string')
+data = np.loadtxt(data_dir+data_fn, dtype='str')
 features = data[:,1:-1]
 print (features.shape)
 n = features.shape[0]

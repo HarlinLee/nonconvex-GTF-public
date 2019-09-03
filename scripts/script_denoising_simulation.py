@@ -27,7 +27,8 @@ def runDenoisingSimulation(name, INPUT_SNRs, PENALTIES, k, Gnx, y_true, max_eval
     # Observation = signal + random noise
     SIGMA_SQs = y_true_norm_sq / np.array([10 ** (snr / 10.0) for snr in INPUT_SNRs]) / n
     Dk = penalty_matrix(Gnx, k)
-    [S, V] = np.linalg.eig(Dk.T.dot(Dk))
+    DTD = Dk.T.dot(Dk).toarray()
+    [S, V] = np.linalg.eigh(DTD)
     print 'INPUT_SNRs:', INPUT_SNRs
     print 'SIGMA_SQs:', SIGMA_SQs
 

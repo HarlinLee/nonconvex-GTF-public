@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 import sys
 sys.path.append('../GTF3')
-from GTF3.Utilities import *
+from Utilities import *
 
 
 # -
@@ -35,7 +35,7 @@ def runDenoisingSimulation(name, INPUT_SNRs, PENALTIES, k, Gnx, y_true, max_eval
     print ('INPUT_SNRs:', INPUT_SNRs)
     print ('SIGMA_SQs:', SIGMA_SQs)
 
-    outputfn = 'datasets/' + name + '/'+name+'-simulation' + datetime.now().strftime('-%y-%m-%d-%H-%M') + '.csv'
+    outputfn = '../datasets/' + name + '/'+name+'-simulation' + datetime.now().strftime('-%y-%m-%d-%H-%M') + '.csv'
 
     with open(outputfn, 'w') as csvfile:
         writer = csv.writer(csvfile, delimiter=',')
@@ -57,7 +57,7 @@ def runDenoisingSimulation(name, INPUT_SNRs, PENALTIES, k, Gnx, y_true, max_eval
 
             for penalty in range(len(PENALTIES)):
                 penalty_f = PENALTIES[penalty]
-                print penalty_f
+                print (penalty_f)
 
                 # Vector-GTF
                 if penalty_f in ['L1']:
@@ -181,7 +181,7 @@ d = 10
 # name = 'minnesota'
 # G = pg.graphs.Minnesota(connect=True)
 # Gnx = nx.from_scipy_sparse_matrix(G.A.astype(float), edge_attribute='weight')
-# y_true = np.load('datasets/minnesota/beta_0.npy')
+# y_true = np.load('../datasets/minnesota/beta_0.npy')
 
 # pspace = (
 #     hp.loguniform('gamma_mult', -3, 5),

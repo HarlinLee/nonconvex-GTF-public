@@ -7,7 +7,7 @@ sys.path.append('../GTF3')
 from Utilities import *
 
 # Semi-supervised classification on graph.
-# Table 1 in paper.
+# Table 3 in paper.
 
 max_evals = 1
 pspace = (hp.loguniform('gamma', -4, 4),
@@ -22,8 +22,8 @@ percent_seeds = 0.2
 
 delim = ','
 
-data_dir = 'datasets/UCI_data/preprocessed/'
-results_dir = 'datasets/UCI_data/results/'
+data_dir = '../datasets/UCI_data/preprocessed/'
+results_dir = '../datasets/UCI_data/results/'
 
 ""
 fn = 'iris'
@@ -90,7 +90,6 @@ with open(outputfn, 'w') as csvfile:
         print ('k =', k)
         B_init = None
         Dk = penalty_matrix(G, k)
-        [S, V] = np.linalg.eig(Dk.T.dot(Dk))
         
         for penalty_f in PENALTIES:
             print (penalty_f)
@@ -101,7 +100,7 @@ with open(outputfn, 'w') as csvfile:
                 B_init = l1_init  # initialization with L1 output
 
             opt_param, B_hat, miscls_avg, penalty_param, miscls = autotune_ssl(seeds, Y_true, Dk, R, penalty_f, max_evals,
-                                                                               pspace, eig=(S,V), B_init=B_init)
+                                                                               pspace, B_init=B_init)
             if penalty_f == 'L1':
                 l1_init = B_hat.copy()
 
