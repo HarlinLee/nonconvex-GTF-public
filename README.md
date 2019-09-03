@@ -50,23 +50,38 @@ Note that when you run these scripts, numbers can be different from what is repo
 <!-- #endregion -->
 
 GTF/ and scripts/ are developed in Python 2.7, and
+	
 	* Numpy 1.11.3
+	
 	* Scipy 1.1.0
+	
 	* Pandas 0.23.4
+	
 	* Matplotlib 2.2.3
+	
 	* NetworkX 2.1
+	
 	* Hyperopt 0.2
+	
 	* PyGSP 0.5.1
     
 GTF3/ and scripts3/ are developed in Python 3.6, and
+	
 	* Numpy 1.17.0
+	
 	* Scipy 1.1.0
+	
 	* Pandas 0.24.2
+	
 	* Matplotlib 3.0.1
+	
 	* NetworkX 2.3
+	
 	* Hyperopt 0.2
+	
 	* PyGSP 0.5.1
-    * tqdm 4.26.0
+    	
+	* tqdm 4.26.0
 
 	
 
