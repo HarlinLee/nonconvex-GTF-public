@@ -7,45 +7,45 @@ You can view the paper on arXiv https://arxiv.org/abs/1905.12692.
 
 Note that when you run these scripts, numbers can be different from what is reported in the paper due to random noise.
 
-* Figure 4 
-
+	* Figure 4 
+	
 	script/support_recovery.ipynb
     
     
-* Figure 5
+	* Figure 5
+	
+	middle panel: script(3)/script_denoising_simulation.py
+	
+	right panel: script3/Runtime experiment.ipynb
+	
+	datasets/2d-grid
+	
+	datasets/minnesota
+	
+	
+	* Table 3
+	
+	script(3)/script_diff_snr_measurements.py
 
-    middle panel: script(3)/script_denoising_simulation.py
 
-    right panel: script3/Runtime experiment.ipynb
-
-    datasets/2d-grid
-
-    datasets/minnesota
-    
-    
-* Table 3 
-
-    script(3)/script_diff_snr_measurements.py
-
-
-* Table 4
-
+	* Table 4
+	
 	script(3)/script_UCI_clean_data.py
-
+	
 	script(3)/script_UCI_classification.py
-
+	
 	script(3)/script_UCI_get_pvalues.py
-
+	
 	datasets/UCI_data
     
     
-* Figure 6
-
-    script3/NYC_taxi.ipynb
+	* Figure 6
+	
+	script3/NYC_taxi.ipynb
     
     
-* All other figures
-
+	* All other figures
+	
 	script/plotting.ipynb
 <!-- #endregion -->
 
