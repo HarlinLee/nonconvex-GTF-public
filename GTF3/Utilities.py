@@ -17,7 +17,7 @@ def gen_pwc_sig(Gnx,num_seeds,path_lens):
     #path_lens = dict(nx.shortest_path_length(Gnx))
     get_nearest = lambda source: seeds[np.argmin(np.array([path_lens[source][target]
                                        for target in seeds]))]
-    closest_seeds = np.array(map(get_nearest, range(Gnx.number_of_nodes())))
+    closest_seeds = np.array(list(map(get_nearest, range(Gnx.number_of_nodes()))))
     sig = [seeds_sig_dict[x] for x in closest_seeds]
     return np.array(sig)
 
@@ -50,7 +50,9 @@ def penalty_matrix(Gnx, k):
         return incidence_matrix(Gnx) * penalty_matrix(Gnx,k-1)
     elif k % 2 == 1:
         return incidence_matrix(Gnx).transpose() * penalty_matrix(Gnx,k-1)
-    
+
+
+""
 def create2DGraph(n=10, plot_flag=0):
     # Create lattice graph. Thanks networkx.
     G = nx.grid_2d_graph(n, n, periodic=False)
@@ -63,8 +65,8 @@ def create2DGraph(n=10, plot_flag=0):
 def create2DSignal(k=0, n=10, Y_HIGH=10, Y_LOW=-5):
     if k == 0:
         signal_2d = np.zeros((n, n))
-        signal_2d[:n/4+1, :n/4+1] = Y_HIGH
-        signal_2d[3*n/4-1:, 3*n/4-1:] = Y_LOW
+        signal_2d[:n//4+1, :n//4+1] = Y_HIGH
+        signal_2d[3*n//4-1:, 3*n//4-1:] = Y_LOW
 
     elif k == 1:
         f = interp2d([0, int(n / 2), n], [0, int(3.0 / 5 * n), n], [[10, 9, 8], [-4, -5, -10], [5, 4, 3]],
@@ -146,7 +148,7 @@ def admm_denoising_snr(args,  Y, sigma_sq, y_true, Dk, penalty_f, eig, B_init, v
         penalty_param = 1.4
         rho = max(rho_mult * gamma, 1 / penalty_param)
     
-    invX = V.dot(np.diag(1.0/(1.0+rho*S))).dot(V.T)
+    invX = V.dot(np.diag(1/(1+rho*S))).dot(V.T)
     
     if vec:
         B, obj, err_path = admm(Y, gamma, rho, Dk, penalty_f, penalty_param,
@@ -201,7 +203,7 @@ def autotune_denoising(Y, y_true, Dk, penalty_f, sigma_sq, max_evals, pspace, ei
 def admm_ssl_miscls(args, seeds, Y_true, Dk, R, penalty_f, B_init):
 
     gamma, rho_mult = args
-
+    
     if penalty_f == 'L1':
         penalty_param = 0
         rho = rho_mult * gamma
@@ -214,7 +216,7 @@ def admm_ssl_miscls(args, seeds, Y_true, Dk, R, penalty_f, B_init):
 
     n, K = Y_true.shape
     num_trial = seeds.shape[2]
-
+    
     miscls = []
     Bs = np.zeros((n, K, num_trial))
 
@@ -225,7 +227,7 @@ def admm_ssl_miscls(args, seeds, Y_true, Dk, R, penalty_f, B_init):
             inds_obs = seeds[:, j, trial].astype(np.int)
             mask[inds_obs, inds_obs] = 1.0
             Y_obs[inds_obs, j] = 1.0
-
+                    
         if B_init is None:
             b_init = None
         else:

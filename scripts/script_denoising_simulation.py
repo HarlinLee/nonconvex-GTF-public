@@ -1,3 +1,4 @@
+# +
 import numpy as np
 import pandas as pd
 import networkx as nx
@@ -6,65 +7,31 @@ from scipy.interpolate import interp2d
 import csv
 from datetime import datetime
 from hyperopt import hp
-from GTF.Utilities import autotune_denoising
+import sys
+sys.path.append('../GTF')
+from Utilities import *
+
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
+
+# -
+
 # Run GTF on piecewise constant signals on a 2D-grid graph and Minnesota road network. Get SNRss.
 # Figure 3 middle panel.
-
-def create2DSignal(k=0, n=10, Y_HIGH=10, Y_LOW=-5):
-    if k == 0:
-        signal_2d = np.zeros((n, n))
-        signal_2d[:n/4+1, :n/4+1] = Y_HIGH
-        signal_2d[3*n/4-1:, 3*n/4-1:] = Y_LOW
-
-    elif k == 1:
-        f = interp2d([0, int(n / 2), n], [0, int(3.0 / 5 * n), n], [[10, 9, 8], [-4, -5, -10], [5, 4, 3]],
-                     kind='linear')
-        signal_2d = f(np.arange(n), np.arange(n))
-
-    else:
-        print "we dont have that yet!"
-        return
-    Gnx = create2DGraph(n, plot_flag=0)
-    xs = []
-    ys = []
-    y_true = []
-
-    for node in Gnx.nodes():
-        x, y = node
-        xs.append(x)
-        ys.append(y)
-
-        y_true.append(signal_2d[y, x])
-
-    y_true = np.array(y_true)
-
-    return Gnx, signal_2d, y_true, xs, ys
-
-
-def create2DGraph(n=10, plot_flag=0):
-    # Create lattice graph. Thanks networkx.
-    G = nx.grid_2d_graph(n, n, periodic=False)
-    if plot_flag:
-        nx.draw_kamada_kawai(G)
-        plt.title('Lattice Graph Visualization')
-        plt.show()
-    return G
-
 
 def runDenoisingSimulation(name, INPUT_SNRs, PENALTIES, k, Gnx, y_true, max_evals, pspace, d):
     n = nx.number_of_nodes(Gnx)
     y_true_norm_sq = np.linalg.norm(y_true, 2) ** 2
     # Observation = signal + random noise
     SIGMA_SQs = y_true_norm_sq / np.array([10 ** (snr / 10.0) for snr in INPUT_SNRs]) / n
-
+    Dk = penalty_matrix(Gnx, k)
+    [S, V] = np.linalg.eig(Dk.T.dot(Dk))
     print 'INPUT_SNRs:', INPUT_SNRs
     print 'SIGMA_SQs:', SIGMA_SQs
 
-    outputfn = 'datasets/' + name + '/'+name+'-simulation' + datetime.now().strftime('-%y-%m-%d-%H-%M') + '.csv'
+    outputfn = '../datasets/' + name + '/'+name+'-simulation' + datetime.now().strftime('-%y-%m-%d-%H-%M') + '.csv'
 
     with open(outputfn, 'w') as csvfile:
         writer = csv.writer(csvfile, delimiter=',')
@@ -94,9 +61,9 @@ def runDenoisingSimulation(name, INPUT_SNRs, PENALTIES, k, Gnx, y_true, max_eval
                 else:
                     B_init = l1_init_vec  # warm start with L1 GTF estimate
 
-                opt_param, B_hat, snr_avg, penalty_param, output_snr = autotune_denoising(Gnx, Y, y_true, k,
+                opt_param, B_hat, snr_avg, penalty_param, output_snr = autotune_denoising(Y, y_true, Dk,
                                                                                           penalty_f, sigma_sq,
-                                                                                          max_evals, pspace,
+                                                                                          max_evals, pspace, eig=(S,V),
                                                                                           B_init=B_init, vec=True)
                 if penalty_f == 'L1':
                     l1_init_vec = B_hat.copy()
@@ -122,9 +89,9 @@ def runDenoisingSimulation(name, INPUT_SNRs, PENALTIES, k, Gnx, y_true, max_eval
                 else:
                     B_init = l1_init  # warm start with L1 output
 
-                opt_param, B_hat, snr_avg, penalty_param, output_snr = autotune_denoising(Gnx, Y, y_true, k,
+                opt_param, B_hat, snr_avg, penalty_param, output_snr = autotune_denoising(Y, y_true, Dk,
                                                                                           penalty_f, sigma_sq,
-                                                                                          max_evals, pspace,
+                                                                                          max_evals, pspace, eig=(S,V),
                                                                                           B_init=B_init, vec=False)
                 if penalty_f == 'L1':
                     l1_init = B_hat.copy()
@@ -184,13 +151,13 @@ def saveSimulationResults(outputfn, name):
     return 1
 
 
-############################################################
+""
 PENALTIES = ['L1', 'SCAD-L1', 'MCP-L1']
 INPUT_SNRs = range(-10, 31, 5)
 k = 0
-############################################################
+""
 
-# ############################################################
+""
 name = '2d-grid'
 n = 20
 Y_HIGH = 10
@@ -204,9 +171,9 @@ pspace = (
 )
 max_evals = 40
 d = 10
-# ############################################################
+""
 
-############################################################
+# ###########################################################
 # name = 'minnesota'
 # G = pg.graphs.Minnesota(connect=True)
 # Gnx = nx.from_scipy_sparse_matrix(G.A.astype(float), edge_attribute='weight')
@@ -218,7 +185,6 @@ d = 10
 # )
 # max_evals = 100
 # d = 20
-############################################################
-
+""
 outputfn = runDenoisingSimulation(name, INPUT_SNRs, PENALTIES, k, Gnx, y_true, max_evals, pspace, d)
 saveSimulationResults(outputfn, name)

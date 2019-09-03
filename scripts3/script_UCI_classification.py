@@ -1,7 +1,10 @@
 from sklearn.neighbors import kneighbors_graph
 import csv
 from datetime import datetime
-from GTF.Utilities import *
+import sys
+import numpy as np
+sys.path.append('../GTF3')
+from Utilities import *
 
 # Semi-supervised classification on graph.
 # Table 1 in paper.
@@ -22,15 +25,15 @@ delim = ','
 data_dir = 'datasets/UCI_data/preprocessed/'
 results_dir = 'datasets/UCI_data/results/'
 
-################################################
+""
 fn = 'iris'
-################################################
-print fn
+""
+print (fn)
 
 # read data files
 features = np.loadtxt(data_dir + fn + '.features', dtype='float', delimiter=delim)
 classes = np.loadtxt(data_dir + fn + '.classes', dtype='float', delimiter=delim)
-print features.shape
+print (features.shape)
 
 # normalize features to have 0 mean and variance 1 (standard-)
 for col in range(features.shape[1]):
@@ -40,7 +43,7 @@ n = features.shape[0]
 K = int(max(classes) + 1)
 
 Y_true = np.zeros((n, K))
-print K
+print (K)
 
 for j in range(K):
     Y_true[:, j] = 1.0 * (classes == j)
@@ -76,7 +79,7 @@ for trial in range(num_trial):
 seeds = seeds[:largest_num_seeds, :, :]
 
 outputfn = results_dir + fn + datetime.now().strftime('-%y-%m-%d-%H-%M') + '.csv'
-print outputfn
+print (outputfn)
 
 with open(outputfn, 'w') as csvfile:
     writer = csv.writer(csvfile, delimiter=',')
@@ -84,19 +87,21 @@ with open(outputfn, 'w') as csvfile:
         ['k', 'penalty_f', 'gamma', 'rho_mult', 'penalty_param', 'avg miscls rate', 'num_trial', 'misclass rates'])
 
     for k in ORDER_K:
-        print 'k =', k
+        print ('k =', k)
         B_init = None
-
+        Dk = penalty_matrix(G, k)
+        [S, V] = np.linalg.eig(Dk.T.dot(Dk))
+        
         for penalty_f in PENALTIES:
-            print penalty_f
+            print (penalty_f)
 
             if penalty_f in ['L1']:
                 B_init = None  # default initialization Y_obs + R_unobs
             else:
                 B_init = l1_init  # initialization with L1 output
 
-            opt_param, B_hat, miscls_avg, penalty_param, miscls = autotune_ssl(seeds, G, Y_true, k, R, penalty_f, max_evals,
-                                                                               pspace, B_init=B_init)
+            opt_param, B_hat, miscls_avg, penalty_param, miscls = autotune_ssl(seeds, Y_true, Dk, R, penalty_f, max_evals,
+                                                                               pspace, eig=(S,V), B_init=B_init)
             if penalty_f == 'L1':
                 l1_init = B_hat.copy()
 
@@ -107,7 +112,7 @@ with open(outputfn, 'w') as csvfile:
                 + list(np.around(miscls, decimals=4))
             )
 
-            print ' '
-            print 'misclassification rate averaged over ' + str(num_trial) + ' trials:', np.around(miscls_avg, decimals=4)
-            print np.around(opt_param['gamma'], decimals=4), np.around(opt_param['rho_mult'], decimals=4), penalty_param
-print '==================================================='
+            print (' ')
+            print ('misclassification rate averaged over ' + str(num_trial) + ' trials:', np.around(miscls_avg, decimals=4))
+            print (np.around(opt_param['gamma'], decimals=4), np.around(opt_param['rho_mult'], decimals=4), penalty_param)
+print ('===================================================')
