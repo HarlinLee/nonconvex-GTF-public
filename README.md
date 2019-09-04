@@ -3,7 +3,7 @@
 
 R. Varma, H. Lee, J. Kovačević, and Y. Chi, “Vector-Valued Graph Trend Filtering with Non-Convex Penalties,” in *IEEE Transactions on Signal and Information Processing over Networks*, 2019. **Submitted**.
 
-You can view the paper on arXiv https://arxiv.org/abs/1905.12692.
+You can view the paper on arXiv https://arxiv.org/abs/1905.12692v2.
 
 Note that when you run these scripts, numbers can be different from what is reported in the paper due to random noise.
 
@@ -82,9 +82,3 @@ GTF3/ and scripts3/ are developed in Python 3.6, and
 	* PyGSP 0.5.1
     	
 	* tqdm 4.26.0
-
-	
-
-```python
-
-```
