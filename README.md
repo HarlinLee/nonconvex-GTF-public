@@ -1,9 +1,9 @@
 <!-- #region -->
 # Nonconvex GTF
 
-R. Varma, H. Lee, J. Kovačević, and Y. Chi, “Vector-Valued Graph Trend Filtering with Non-Convex Penalties,” in *IEEE Transactions on Signal and Information Processing over Networks*, 2019. **Submitted**.
+R. Varma*, H. Lee*, J. Kovačević and Y. Chi, “Vector-Valued Graph Trend Filtering With Non-Convex Penalties,” in IEEE Transactions on Signal and Information Processing over Networks, vol. 6, pp. 48-62, 2020.
 
-You can view the paper on arXiv https://arxiv.org/abs/1905.12692v2.
+You can view the paper on arXiv https://arxiv.org/abs/1905.12692.
 
 Note that when you run these scripts, numbers can be different from what is reported in the paper due to random noise.
 
