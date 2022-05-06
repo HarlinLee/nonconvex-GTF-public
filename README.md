@@ -3,7 +3,7 @@
 
 R. Varma*, H. Lee*, J. Kovačević and Y. Chi, “Vector-Valued Graph Trend Filtering With Non-Convex Penalties,” in IEEE Transactions on Signal and Information Processing over Networks, vol. 6, pp. 48-62, 2020. 
 
-https://ieeexplore-ieee-org.proxy.library.cmu.edu/document/8926407
+https://ieeexplore.ieee.org/document/8926407
 
 You can view the paper on arXiv https://arxiv.org/abs/1905.12692.
 
